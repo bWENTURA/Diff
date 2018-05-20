@@ -1,0 +1,4 @@
+#ifndef LONGEST_SEQUENCE_HPP
+#define LONGEST_SEQUENCE_HPP
+
+#endif

@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g", "main.cpp", "longest_sequence.cpp", "-o", "diff"
+                "-g", "main.cpp", "functions.cpp", "longest_sequence.cpp", "-o", "diff"
             ],
             "group": {
                 "kind": "build",

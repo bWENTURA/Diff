@@ -3,13 +3,12 @@
 #include "longest_sequence.hpp"
 
 int main(int argc, char* argv[]){
-    if(argc == 3){ 
-        std::cout << "bleeeeee" << std::endl;
+    if(argc == 3){
         std::ifstream file_0, file_1;
         file_0.open(argv[1], std::ios_base::in);
         file_1.open(argv[2], std::ios_base::in);
-        manage_file(file_0, file_1);
+        if(file_0 && file_1)
+            manage_file(file_0, file_1);
     }
-    system("pause");
     return 0;
 }

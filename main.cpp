@@ -10,5 +10,6 @@ int main(int argc, char* argv[]){
         if(file_0 && file_1)
             manage_file(file_0, file_1);
     }
+    system("pause");
     return 0;
 }

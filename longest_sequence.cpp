@@ -21,16 +21,6 @@ std::vector<std::vector<T>> create_matrix(int height, int width){
     return matrix;
 }
 
-std::vector<std::pair<std::string, std::string>> lcs_sentences(std::string first_string, std::string second_string){
-    std::vector<std::pair<std::string, std::string>> result_sentence;
-    std::stringstream first_stream(first_string);
-    std::stringstream second_stream(second_string);
-    std::string temp_first, temp_second, result_words;
-    while(std::getline(first_stream, temp_first, ' ') && std::getline(second_stream, temp_second, ' '))
-        lcs_two_strings(temp_first, temp_second);
-    return result_sentence;
-}
-
 std::string lcs_two_strings(std::string first_word, std::string second_word){
     std::cout << first_word << " " << second_word << std::endl;
     std::cout << first_word.size() << " " << second_word.size() << std::endl;
@@ -54,8 +44,8 @@ std::string lcs_two_strings(std::string first_word, std::string second_word){
             }
         }
     }
-    print_matrix(matrix_values, first_word.size(), second_word.size());
-    print_matrix(matrix_signs, first_word.size(), second_word.size());
+    // print_matrix(matrix_values, first_word.size(), second_word.size());
+    // print_matrix(matrix_signs, first_word.size(), second_word.size());
     int temp_length = matrix_values[first_word.size()][second_word.size()];
     int i = first_word.size(), j = second_word.size();
     std::string result;
@@ -73,4 +63,45 @@ std::string lcs_two_strings(std::string first_word, std::string second_word){
         }
     }
     return result;
+}
+
+std::vector<std::pair<std::string, std::string>> lcs_sentences(std::string first_sentence, std::string second_sentence){
+    std::vector<std::pair<std::string, std::string>> result_sentence;
+    std::stringstream first_stream(first_sentence);
+    std::stringstream second_stream(second_sentence);
+    std::string first_word, second_word, result_word, diff_sum, diff_signs;
+    while(std::getline(first_stream, first_word, ' ') && std::getline(second_stream, second_word, ' ')){
+        result_word = lcs_two_strings(first_word, second_word);
+        std::cout << result_word << std::endl <<std::endl;
+        diff_sum.reserve(first_word.size() + second_word.size() - result_word.size());
+        diff_signs.reserve(first_word.size() + second_word.size() - result_word.size());
+        int l = 0, k = 0, j = 0;
+        for(int i = 0; i < first_word.size() + second_word.size() - result_word.size(); ++i){
+            //std::cout << "bleeeeeeeeeeeeee" << std::endl;
+            if(l != result_word.size() && (k != first_word.size() && first_word[k] == result_word[l]) && (j != second_word.size() && second_word[j] == result_word[l])){
+                diff_sum += result_word[l];
+                diff_signs += '=';
+                //std::cout << diff_signs.size() << "\n" << diff_sum.size() << std::endl;
+                k++;
+                j++;
+                l++;
+            }
+            else{
+                if (k != first_word.size() && first_word[k] != result_word[l]){
+                    diff_sum += first_word[k];
+                    diff_signs += '-';
+                    k++;
+                }
+                if (j != second_word.size() && second_word[j] != result_word[l]){
+                    diff_sum += second_word[j];
+                    diff_signs += '+';
+                    j++;
+                }
+            }
+        }
+        std::cout << diff_signs << "\n" << diff_sum << std::endl;
+        diff_signs.clear();
+        diff_sum.clear();
+    }
+    return result_sentence;
 }

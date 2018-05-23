@@ -44,64 +44,72 @@ std::string lcs_two_strings(std::string first_word, std::string second_word){
             }
         }
     }
-    // print_matrix(matrix_values, first_word.size(), second_word.size());
-    // print_matrix(matrix_signs, first_word.size(), second_word.size());
     int temp_length = matrix_values[first_word.size()][second_word.size()];
     int i = first_word.size(), j = second_word.size();
-    std::string result;
-    result.resize(temp_length);
+    std::string result_word;
+    result_word.resize(temp_length);
     while(temp_length){
         if(matrix_signs[i][j] == '\\'){
             --i;
             --j; 
             --temp_length;
-            result[temp_length] = first_word[i];
+            result_word[temp_length] = first_word[i];
         }
         else{
             if(matrix_signs[i][j] == '^') --i;
             else --j;
         }
     }
-    return result;
+    return result_word;
+}
+
+std::pair<std::string, std::string> create_pair_of_diff(std::string first_word, std::string second_word, std::string result_word){
+    std::string diff_sum, diff_signs;
+    diff_sum.reserve(2*(first_word.size() + second_word.size() - result_word.size()));
+    diff_signs.reserve(2*(first_word.size() + second_word.size() - result_word.size()));
+    int l = 0, k = 0, j = 0;
+    for(int i = 0; i < first_word.size() + second_word.size() - result_word.size(); ++i){
+        if(l != result_word.size() && (k != first_word.size() && first_word[k] == result_word[l]) && (j != second_word.size() && second_word[j] == result_word[l])){
+            diff_sum += result_word[l];
+            diff_sum += " ";
+            diff_signs += "= ";
+            k++;
+            j++;
+            l++;
+        }
+        else{
+            if (k != first_word.size() && first_word[k] != result_word[l]){
+                diff_sum += first_word[k];
+                diff_sum += " ";
+                diff_signs += "- ";
+                k++;
+            }
+            if (j != second_word.size() && second_word[j] != result_word[l]){
+                diff_sum += second_word[j];
+                diff_sum += " ";
+                diff_signs += "+ ";
+                j++;
+            }
+        }
+    }
+    std::pair<std::string, std::string> result_pair(diff_signs, diff_sum);
+    return result_pair;
 }
 
 std::vector<std::pair<std::string, std::string>> lcs_sentences(std::string first_sentence, std::string second_sentence){
     std::vector<std::pair<std::string, std::string>> result_sentence;
+    std::vector<std::pair<std::string, std::string>> vec_of_diffs;
     std::stringstream first_stream(first_sentence);
     std::stringstream second_stream(second_sentence);
-    std::string first_word, second_word, result_word, diff_sum, diff_signs;
+    std::string first_word, second_word, diff_sum, diff_signs;
     while(std::getline(first_stream, first_word, ' ') && std::getline(second_stream, second_word, ' ')){
-        result_word = lcs_two_strings(first_word, second_word);
-        std::cout << result_word << std::endl <<std::endl;
-        diff_sum.reserve(first_word.size() + second_word.size() - result_word.size());
-        diff_signs.reserve(first_word.size() + second_word.size() - result_word.size());
-        int l = 0, k = 0, j = 0;
-        for(int i = 0; i < first_word.size() + second_word.size() - result_word.size(); ++i){
-            //std::cout << "bleeeeeeeeeeeeee" << std::endl;
-            if(l != result_word.size() && (k != first_word.size() && first_word[k] == result_word[l]) && (j != second_word.size() && second_word[j] == result_word[l])){
-                diff_sum += result_word[l];
-                diff_signs += '=';
-                //std::cout << diff_signs.size() << "\n" << diff_sum.size() << std::endl;
-                k++;
-                j++;
-                l++;
-            }
-            else{
-                if (k != first_word.size() && first_word[k] != result_word[l]){
-                    diff_sum += first_word[k];
-                    diff_signs += '-';
-                    k++;
-                }
-                if (j != second_word.size() && second_word[j] != result_word[l]){
-                    diff_sum += second_word[j];
-                    diff_signs += '+';
-                    j++;
-                }
-            }
-        }
-        std::cout << diff_signs << "\n" << diff_sum << std::endl;
-        diff_signs.clear();
-        diff_sum.clear();
+        vec_of_diffs.push_back(create_pair_of_diff(first_word, second_word, lcs_two_strings(first_word, second_word)));
     }
+    for(auto it: vec_of_diffs)
+        std::cout << it.first << ",    ";
+    std::cout << "\n";
+    for(auto it: vec_of_diffs)
+        std::cout << it.second << ",    ";
+    std::cout << std::endl;
     return result_sentence;
 }

@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <utility>
 #include <sstream>
+#include <utility>
+#include <algorithm>
 
 #endif

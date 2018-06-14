@@ -2,14 +2,95 @@
 #include "longest_sequence.hpp"
 #include "functions.hpp"
 
-void manage_file(std::istream& file_0, std::istream& file_1){
-    std::string first_line, second_line;
-    std::vector<std::pair<std::string, std::string>> results_lines;
-    while(std::getline(file_0, first_line) && std::getline(file_1, second_line)){
-        results_lines = lcs_sentences(first_line, second_line);
+std::vector<std::vector<std::pair<char, std::string>>> get_sentences_from_file(std::istream& file_0, std::istream& file_1){
+    std::vector<std::vector<std::pair<char, std::string>>> sentences_matrix(2);
+    while(file_0.good()){
+        file_0.clear();
+        std::string result_sentence;
+        getline(file_0, result_sentence, '.');
+        if(file_0.good()){
+            if(result_sentence.front() == '\n')
+                result_sentence.erase(result_sentence.begin(), result_sentence.begin() + 1);
+            std::replace(result_sentence.begin(), result_sentence.end(), '\n', ' ');
+            result_sentence += '.';
+            sentences_matrix[0].push_back(std::make_pair(' ', result_sentence));
+        }
     }
+     while(file_1.good()){
+        file_1.clear();
+        std::string result_sentence;
+        getline(file_1, result_sentence, '.');
+        if(file_1.good()){
+            if(result_sentence.front() == '\n')
+                result_sentence.erase(result_sentence.begin(), result_sentence.begin() + 1);
+            std::replace(result_sentence.begin(), result_sentence.end(), '\n', ' ');
+            result_sentence += '.';
+            sentences_matrix[1].push_back(std::make_pair('-', result_sentence));
+        }
+    }
+    return sentences_matrix;
 }
 
+std::vector<std::string> create_vector_subsentence(const std::string &sentence){
+    std::vector<std::string> result;
+    std::stringstream temp_stream;
+    std::string temp;
+    if(sentence.back() == '.')
+        temp_stream.str(sentence.substr(0, sentence.size() - 1));
+    else
+        temp_stream.str(sentence);
+    while(getline(temp_stream, temp, ' '))
+        result.push_back(temp);
+    return result;
+}
+
+
+void update_differences(std::vector<std::vector<std::pair<char, std::string>>> &result_matrix){
+    std::vector<std::pair<int, float>> lcs_index_vec;
+    std::vector<std::vector<std::string>> compare_matrix_first, compare_matrix_second;
+    compare_matrix_first.reserve(result_matrix[0].size());
+    compare_matrix_second.reserve(result_matrix[1].size());
+    for(const auto &it : result_matrix[0])
+        compare_matrix_first.push_back(create_vector_subsentence(it.second));
+    for(const auto &it : result_matrix[1])
+        compare_matrix_second.push_back(create_vector_subsentence(it.second));
+    // for(const auto& it : compare_matrix_first){
+    //     for(const auto &sec_it : it)
+    //         std::cout << sec_it;
+    //     std::cout << "\n";
+    // }
+    //  for(const auto& it : compare_matrix_second){
+    //     for(const auto &sec_it : it)
+    //         std::cout << sec_it;
+    //     std::cout << "\n";
+    // }
+    std::vector<std::pair<char, std::string>>::iterator it_result_second_start = result_matrix[1].begin(); 
+    for(std::vector<std::pair<char, std::string>>::iterator it_result_first = result_matrix[0].begin(); it_result_first != result_matrix[0].end(); ++it_result_first){
+        std::vector<std::pair<char, std::string>>::iterator it_result_second = it_result_second_start;
+        while(it_result_second != result_matrix[1].end()){
+            if(it_result_first->second == it_result_second->second){
+                std::cout << "--------------" << it_result_second->second << it_result_first->second << "------------";
+                if(it_result_second != result_matrix[1].begin()){
+                    for(std::vector<std::pair<char, std::string>>::iterator temp_it = result_matrix[1].begin(); temp_it != it_result_second; ++temp_it)
+                        temp_it->first = 'a';
+                }
+                it_result_second->first = ' ';
+                it_result_second_start = ++it_result_second;
+                break;
+            }
+            else{
+                //lcs
+            }
+            ++it_result_second;
+            if(it_result_second == result_matrix[1].end()){
+                it_result_first->first = '-';
+            }
+        }
+    }
+    for(; it_result_second_start != result_matrix[1].end(); ++it_result_second_start)
+        it_result_second_start->first = 'a';
+
+}
 
 
 

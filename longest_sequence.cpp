@@ -26,8 +26,8 @@ std::string lcs_two_strings(std::string first_word, std::string second_word){
     std::cout << first_word.size() << " " << second_word.size() << std::endl;
     std::vector<std::vector<int>> matrix_values = create_matrix<int>(first_word.size() + 1, second_word.size() + 1);
     std::vector<std::vector<char>> matrix_signs = create_matrix<char>(first_word.size(), second_word.size());
-    for(int i = 1; i <= first_word.size(); ++i){
-        for(int j = 1; j <= second_word.size(); ++j){
+    for(unsigned int i = 1; i <= first_word.size(); ++i){
+        for(unsigned int j = 1; j <= second_word.size(); ++j){
             if(first_word[i - 1] == second_word[j - 1]){
                 matrix_values[i][j] = matrix_values[i - 1][j - 1] + 1;
                 matrix_signs[i][j] = '\\';
@@ -67,8 +67,8 @@ std::pair<std::string, std::string> create_pair_of_diff(std::string first_word, 
     std::string diff_sum, diff_signs;
     diff_sum.reserve(2*(first_word.size() + second_word.size() - result_word.size()));
     diff_signs.reserve(2*(first_word.size() + second_word.size() - result_word.size()));
-    int l = 0, k = 0, j = 0;
-    for(int i = 0; i < first_word.size() + second_word.size() - result_word.size(); ++i){
+    unsigned int l = 0, k = 0, j = 0;
+    for(unsigned int i = 0; i < first_word.size() + second_word.size() - result_word.size(); ++i){
         if(l != result_word.size() && (k != first_word.size() && first_word[k] == result_word[l]) && (j != second_word.size() && second_word[j] == result_word[l])){
             diff_sum += result_word[l];
             diff_sum += " ";
@@ -120,8 +120,8 @@ float calculate_lcs_sentences(const std::vector<std::string>& first_sentence, co
     // std::cout << first_sentence.size() << " " << second_sentence.size() << std::endl;
     std::vector<std::vector<int>> matrix_values = create_matrix<int>(first_sentence.size() + 1, second_sentence.size() + 1);
     std::vector<std::vector<char>> matrix_signs = create_matrix<char>(first_sentence.size(), second_sentence.size());
-    for(int i = 1; i <= first_sentence.size(); ++i){
-        for(int j = 1; j <= second_sentence.size(); ++j){
+    for(unsigned int i = 1; i <= first_sentence.size(); ++i){
+        for(unsigned int j = 1; j <= second_sentence.size(); ++j){
             if(first_sentence[i - 1] == second_sentence[j - 1]){
                 matrix_values[i][j] = matrix_values[i - 1][j - 1] + 1;
                 matrix_signs[i][j] = '\\';
@@ -160,8 +160,8 @@ float calculate_lcs_sentences(const std::vector<std::string>& first_sentence, co
 void get_lcs_whole_text(std::vector<std::pair<char, std::string>>& first_block, std::vector<std::pair<char, std::string>>& second_block){
     std::vector<std::vector<int>> matrix_values = create_matrix<int>(first_block.size() + 1, second_block.size() + 1);
     std::vector<std::vector<char>> matrix_signs = create_matrix<char>(first_block.size(), second_block.size());
-    for(int i = 1; i <= first_block.size(); ++i){
-        for(int j = 1; j <= second_block.size(); ++j){
+    for(unsigned int i = 1; i <= first_block.size(); ++i){
+        for(unsigned int j = 1; j <= second_block.size(); ++j){
             if(first_block[i - 1].second == second_block[j - 1].second){
                 matrix_values[i][j] = matrix_values[i - 1][j - 1] + 1;
                 matrix_signs[i][j] = '\\';
@@ -185,8 +185,8 @@ void get_lcs_whole_text(std::vector<std::pair<char, std::string>>& first_block, 
             --i;
             --j; 
             --temp_length;
-            first_block[i].first = '=';
-            second_block[j].first = '=';
+            first_block[i].first = ' ';
+            second_block[j].first = ' ';
         }
         else{
             if(matrix_signs[i][j] == '^') 

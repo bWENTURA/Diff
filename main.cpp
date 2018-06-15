@@ -13,15 +13,21 @@ int main(int argc, char* argv[]){
         file_0.close();
         file_1.close();
         update_differences(result_matrix);
-        std::cout << "*** 1," << result_matrix[0].size() << " ***\n";
-        int counter = 0;
-        for(const auto &it : result_matrix[0])
-            std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
-        std::cout << "--- 1," << result_matrix[1].size() << " ---\n";
-        counter = 0;
-        for(const auto &it : result_matrix[1])
-            std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
-        std::cout << std::endl;
+        if(result_matrix[0].size()){
+            std::string temp_name = argv[1];
+            std::cout <<  "---- " << temp_name << " *** 1," << result_matrix[0].size() << " ***\n";
+            int counter = 0;
+            for(const auto &it : result_matrix[0])
+                std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
+        }
+        if(result_matrix[1].size()){
+            std::string temp_name = argv[2];
+            std::cout << "---- " << temp_name << " --- 1," << result_matrix[1].size() << " ---\n";
+            int counter = 0;
+            for(const auto &it : result_matrix[1])
+                std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
+        }
+        std::cout << "\na = added in second file || " << "d = deleted from first file || " << "c = line have some changes || " << "no sign = equal lines\n" << std::endl;
     }
     system("pause");
     return 0;

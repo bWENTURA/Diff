@@ -13,7 +13,7 @@ std::vector<std::vector<std::pair<char, std::string>>> get_sentences_from_file(s
                 result_sentence.erase(result_sentence.begin(), result_sentence.begin() + 1);
             std::replace(result_sentence.begin(), result_sentence.end(), '\n', ' ');
             result_sentence += '.';
-            sentences_matrix[0].push_back(std::make_pair('-', result_sentence));
+            sentences_matrix[0].push_back(std::make_pair('d', result_sentence));
         }
     }
      while(file_1.good()){
@@ -25,7 +25,7 @@ std::vector<std::vector<std::pair<char, std::string>>> get_sentences_from_file(s
                 result_sentence.erase(result_sentence.begin(), result_sentence.begin() + 1);
             std::replace(result_sentence.begin(), result_sentence.end(), '\n', ' ');
             result_sentence += '.';
-            sentences_matrix[1].push_back(std::make_pair('+', result_sentence));
+            sentences_matrix[1].push_back(std::make_pair('a', result_sentence));
         }
     }
     return sentences_matrix;
@@ -62,18 +62,18 @@ void update_differences(std::vector<std::vector<std::pair<char, std::string>>>& 
     get_lcs_whole_text(result_matrix[0], result_matrix[1]);
     std::vector<std::pair<char, std::string>>::iterator it_result_second_start = result_matrix[1].begin(); 
     for(std::vector<std::pair<char, std::string>>::iterator it_result_first = result_matrix[0].begin(); it_result_first != result_matrix[0].end(); ++it_result_first){
-        if(it_result_first->first == '='){
+        if(it_result_first->first == ' '){
             ++it_result_first;
-            while(it_result_second_start != result_matrix[1].end() && it_result_second_start->first != '=')
+            while(it_result_second_start != result_matrix[1].end() && it_result_second_start->first != ' ')
                 ++it_result_second_start;
-            if(it_result_second_start->first == '=')
+            if(it_result_second_start->first == ' ')
                 ++it_result_second_start;
         }
         if(it_result_second_start == result_matrix[1].end() || it_result_first == result_matrix[0].end())
             break;
         float calculated_lcs_length = 0;
         std::vector<std::pair<char, std::string>>::iterator it_result_second;
-        for(std::vector<std::pair<char, std::string>>::iterator temp_it = it_result_second_start; temp_it != result_matrix[1].end() && temp_it->first != '='; ++temp_it){
+        for(std::vector<std::pair<char, std::string>>::iterator temp_it = it_result_second_start; temp_it != result_matrix[1].end() && temp_it->first != ' '; ++temp_it){
             float temp_length = calculate_lcs_sentences(compare_matrix_first[it_result_first - result_matrix[0].begin()], compare_matrix_second[temp_it - result_matrix[1].begin()]);
             if(temp_length >= 0.5 && temp_length >= calculated_lcs_length){
                 calculated_lcs_length = temp_length;
@@ -81,8 +81,8 @@ void update_differences(std::vector<std::vector<std::pair<char, std::string>>>& 
             }
         }
         if(calculated_lcs_length >= 0.5){
-            it_result_first->first = '!';
-            it_result_second->first = '!';
+            it_result_first->first = 'c';
+            it_result_second->first = 'c';
             it_result_second_start = it_result_second + 1;
         }
     }

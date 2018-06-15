@@ -1,3 +1,5 @@
+OBJECTS = main.cpp functions.cpp longest_sequence.cpp
+CFLAGS = -g -Wall
 
 all:
-	g++ main.cpp functions.cpp longest_sequence.cpp -g -Wall -o diff
+	g++ $(OBJECTS) $(CFLAGS) -o diff

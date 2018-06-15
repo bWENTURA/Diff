@@ -29,6 +29,5 @@ int main(int argc, char* argv[]){
         }
         std::cout << "\na = added in second file || " << "d = deleted from first file || " << "c = line have some changes || " << "no sign = equal lines\n" << std::endl;
     }
-    system("pause");
     return 0;
 }

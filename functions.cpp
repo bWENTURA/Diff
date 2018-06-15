@@ -49,18 +49,8 @@ void update_differences(std::vector<std::vector<std::pair<char, std::string>>>& 
         compare_matrix_first.push_back(create_vector_subsentence(it.second));
     for(const auto &it : result_matrix[1])
         compare_matrix_second.push_back(create_vector_subsentence(it.second));
-    // for(const auto& it : compare_matrix_first){
-    //     for(const auto &sec_it : it)
-    //         std::cout << sec_it;
-    //     std::cout << "\n";
-    // }
-    //  for(const auto& it : compare_matrix_second){
-    //     for(const auto &sec_it : it)
-    //         std::cout << sec_it;
-    //     std::cout << "\n";
-    // }
     get_lcs_whole_text(result_matrix[0], result_matrix[1]);
-    std::vector<std::pair<char, std::string>>::iterator it_result_second_start = result_matrix[1].begin(); 
+    std::vector<std::pair<char, std::string>>::iterator it_result_second_start = result_matrix[1].begin();
     for(std::vector<std::pair<char, std::string>>::iterator it_result_first = result_matrix[0].begin(); it_result_first != result_matrix[0].end(); ++it_result_first){
         if(it_result_first->first == ' '){
             ++it_result_first;
@@ -88,6 +78,3 @@ void update_differences(std::vector<std::vector<std::pair<char, std::string>>>& 
     }
 
 }
-
-
-

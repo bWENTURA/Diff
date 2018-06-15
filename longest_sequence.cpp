@@ -157,6 +157,46 @@ float calculate_lcs_sentences(const std::vector<std::string>& first_sentence, co
     return lcs_lenght/first_sentence.size();
 }
 
+void get_lcs_whole_text(std::vector<std::pair<char, std::string>>& first_block, std::vector<std::pair<char, std::string>>& second_block){
+    std::vector<std::vector<int>> matrix_values = create_matrix<int>(first_block.size() + 1, second_block.size() + 1);
+    std::vector<std::vector<char>> matrix_signs = create_matrix<char>(first_block.size(), second_block.size());
+    for(int i = 1; i <= first_block.size(); ++i){
+        for(int j = 1; j <= second_block.size(); ++j){
+            if(first_block[i - 1].second == second_block[j - 1].second){
+                matrix_values[i][j] = matrix_values[i - 1][j - 1] + 1;
+                matrix_signs[i][j] = '\\';
+            }
+            else{
+                if(matrix_values[i - 1][j] >= matrix_values[i][j - 1]){
+                    matrix_values[i][j] = matrix_values[i - 1][j];
+                    matrix_signs[i][j] = '^';
+                }
+                else{
+                    matrix_values[i][j] = matrix_values[i][j - 1];
+                    matrix_signs[i][j] = '<';
+                }
+            }
+        }
+    }
+    int temp_length = matrix_values[first_block.size()][second_block.size()];
+    int i = first_block.size(), j = second_block.size();
+    while(temp_length){
+        if(matrix_signs[i][j] == '\\'){
+            --i;
+            --j; 
+            --temp_length;
+            first_block[i].first = '=';
+            second_block[j].first = '=';
+        }
+        else{
+            if(matrix_signs[i][j] == '^') 
+                --i;
+            else 
+                --j;
+        }
+    }
+}
+
 // int lcs_sentences(std::string first_sentence, std::string second_sentence){
 //     int temp=0;
 //     std::vector<std::pair<std::string, std::string>> result_sentence;

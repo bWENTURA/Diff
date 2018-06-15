@@ -14,11 +14,13 @@ int main(int argc, char* argv[]){
         file_1.close();
         update_differences(result_matrix);
         std::cout << "*** 1," << result_matrix[0].size() << " ***\n";
+        int counter = 0;
         for(const auto &it : result_matrix[0])
-            std::cout << it.first << "  " << it.second << "\n";
+            std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
         std::cout << "--- 1," << result_matrix[1].size() << " ---\n";
+        counter = 0;
         for(const auto &it : result_matrix[1])
-            std::cout << it.first << "  " << it.second << "\n";
+            std::cout << ++counter << ". " << it.first << "  " << it.second << "\n";
         std::cout << std::endl;
     }
     system("pause");

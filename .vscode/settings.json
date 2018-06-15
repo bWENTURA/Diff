@@ -25,7 +25,13 @@
         "typeinfo": "cpp",
         "fstream": "cpp",
         "sstream": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "array": "cpp",
+        "cmath": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp"
     },
     "C_Cpp.dimInactiveRegions": false
 }
